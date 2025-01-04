@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -29,13 +31,19 @@ public class UsuarioEntity {
     private String apellido2;
 
     @Email
+    @Size(min = 5, max = 255)
     private String email;
 
+    @Size(min = 9, max = 9)
     private String telefono;
 
+    @Size(min = 3, max = 255)
     private String direccion;
 
-    private Long id_tipousuario;
+    @NotNull
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinColumn(name = "id_tipousuario")
+    private TipousuarioEntity tipousuario;
 
     public UsuarioEntity() {
     }
@@ -43,20 +51,19 @@ public class UsuarioEntity {
     
     public UsuarioEntity(@NotNull @Size(min = 3, max = 255) String nombre,
             @NotNull @Size(min = 3, max = 255) String apellido1, @Size(min = 0, max = 255) String apellido2,
-            @Email String email, String telefono, String direccion, Long id_tipousuario) {
+            @Email String email, String telefono, String direccion) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
         this.email = email;
         this.telefono = telefono;
         this.direccion = direccion;
-        this.id_tipousuario = id_tipousuario;
     }
 
 
     public UsuarioEntity(Long id, @NotNull @Size(min = 3, max = 255) String nombre,
             @NotNull @Size(min = 3, max = 255) String apellido1, @Size(min = 0, max = 255) String apellido2,
-            @Email String email, String telefono, String direccion, Long id_tipousuario) {
+            @Email String email, String telefono, String direccion) {
         this.id = id;
         this.nombre = nombre;
         this.apellido1 = apellido1;
@@ -64,7 +71,6 @@ public class UsuarioEntity {
         this.email = email;
         this.telefono = telefono;
         this.direccion = direccion;
-        this.id_tipousuario = id_tipousuario;
     }
 
 
@@ -138,14 +144,14 @@ public class UsuarioEntity {
     }
 
 
-    public Long getId_tipousuario() {
-        return id_tipousuario;
+    public TipousuarioEntity getTipousuario() {
+      return tipousuario;
     }
 
 
-    public void setId_tipousuario(Long id_tipousuario) {
-        this.id_tipousuario = id_tipousuario;
-    }
+    public void setTipousuario(TipousuarioEntity tipousuario) {
+     this.tipousuario = tipousuario;
+   }
 
 
 }
