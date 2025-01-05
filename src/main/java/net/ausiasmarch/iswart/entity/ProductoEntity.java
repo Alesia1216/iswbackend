@@ -25,11 +25,9 @@ public class ProductoEntity {
     private String estilo;
     
     @NotNull
-    @Size(min = 3, max = 255)
     private Long unidades;
 
     @NotNull
-    @Size(min = 3, max = 255)
     private Double precio;
 
     public ProductoEntity() {
