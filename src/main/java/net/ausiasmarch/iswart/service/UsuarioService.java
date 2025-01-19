@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
+import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.UsuarioRepository;
 
 @Service
@@ -15,6 +17,10 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     
     @Autowired
     UsuarioRepository oUsuarioRepository;
+
+    HttpServletRequest oHttpServletRequest;
+
+    AuthService oAuthService;
 
     //@Autowired
     //TipousuarioService oTipousuarioService;
@@ -34,8 +40,11 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     }
 
     public UsuarioEntity get(Long id) {
-        return oUsuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
-        // return oUsuarioRepository.findById(id).get();
+        if(oAuthService.isContableWithItsOwnData(id) || oAuthService.isAdmin()) {
+            return oUsuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
+        }else{
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+        }
     }
 
     public Long count() {
@@ -80,6 +89,16 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     public Long delete(Long id) {
         oUsuarioRepository.deleteById(id);
         return 1L;
+    }
+
+      public String RestrictedArea() {
+
+        if(oHttpServletRequest.getAttribute("email") == null) {
+            return "No tienes permiso para la zona restringida";
+        }else{
+            return "Bienvenido a zona restringida";
+        }
+
     }
 
 }
