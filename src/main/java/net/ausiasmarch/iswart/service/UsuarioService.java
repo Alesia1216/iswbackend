@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ValidationException;
+import net.ausiasmarch.iswart.entity.TipousuarioEntity;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.UsuarioRepository;
@@ -16,14 +18,15 @@ import net.ausiasmarch.iswart.repository.UsuarioRepository;
 public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     
     @Autowired
+
     UsuarioRepository oUsuarioRepository;
 
     HttpServletRequest oHttpServletRequest;
 
     AuthService oAuthService;
 
-    //@Autowired
-    //TipousuarioService oTipousuarioService;
+    TipousuarioService oTipousuarioService;
+
 
     public Page<UsuarioEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
@@ -40,11 +43,13 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     }
 
     public UsuarioEntity get(Long id) {
-        if(oAuthService.isContableWithItsOwnData(id) || oAuthService.isAdmin()) {
-            return oUsuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
-        }else{
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
-        }
+        // if(oAuthService.isContableWithItsOwnData(id) || oAuthService.isAdmin()) {
+        //     return oUsuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
+        // }else{
+        //     throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+        // }
+        return oUsuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
+
     }
 
     public Long count() {
@@ -52,9 +57,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     }
 
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
-        //if (oUsuarioEntity.getTipousuario() == null) {
-        //throw new ValidationException("El tipo de usuario es obligatorio");
-        //}
         return oUsuarioRepository.save(oUsuarioEntity);
     }
 
@@ -77,6 +79,9 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
         }
         if (oUsuarioEntity.getDireccion() != null) {
             oUsuarioEntityFromDatabase.setDireccion(oUsuarioEntity.getDireccion());
+        }
+        if (oUsuarioEntity.getTipousuario() != null) {
+            oUsuarioEntityFromDatabase.setTipousuario(oUsuarioEntity.getTipousuario());
         }
         return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
     }
