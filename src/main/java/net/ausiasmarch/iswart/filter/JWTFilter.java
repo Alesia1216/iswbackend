@@ -26,33 +26,33 @@ public class JWTFilter implements Filter {
             FilterChain oFilterChain)
             throws IOException, ServletException {
 
-        // HttpServletRequest oHttpServletRequest = (HttpServletRequest) oServletRequest;
-        // HttpServletResponse oHttpServletResponse = (HttpServletResponse) oServletResponse;
+        HttpServletRequest oHttpServletRequest = (HttpServletRequest) oServletRequest;
+        HttpServletResponse oHttpServletResponse = (HttpServletResponse) oServletResponse;
 
-        // if ("OPTIONS".equals(oHttpServletRequest.getMethod())) {
-        //     oHttpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        //     return;
-        // } else {
-        //     String sToken = oHttpServletRequest.getHeader("Authorization");
-        //     if (sToken == null) {
-        //         oFilterChain.doFilter(oServletRequest, oServletResponse);
-        //     } else {
-        //         if (!sToken.startsWith("Bearer ")) {
-        //             oHttpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
-        //             return;
-        //         } else {
-        //             String sTokenReal = sToken.substring(7);
-        //             String email = oJWTService.validateToken(sTokenReal);
+        if ("OPTIONS".equals(oHttpServletRequest.getMethod())) {
+            oHttpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            oFilterChain.doFilter(oServletRequest, oServletResponse);
+        } else {
+            String sToken = oHttpServletRequest.getHeader("Authorization");
+            if (sToken == null) {
+                oFilterChain.doFilter(oServletRequest, oServletResponse);
+            } else {
+                if (!sToken.startsWith("Bearer ")) {
+                    oHttpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
+                    return;
+                } else {
+                    String sTokenReal = sToken.substring(7);
+                    String email = oJWTService.validateToken(sTokenReal);
 
-        //             if (email == null) {
-        //                 oHttpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
-        //                 return;
-        //             } else {
-        //                 oHttpServletRequest.setAttribute("email", email);
-                         oFilterChain.doFilter(oServletRequest, oServletResponse);
-        //             }
-        //         }
-        //     }
-        // }
+                    if (email == null) {
+                        oHttpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
+                        return;
+                    } else {
+                        oHttpServletRequest.setAttribute("email", email);
+                        oFilterChain.doFilter(oServletRequest, oServletResponse);
+                    }
+                }
+            }
+        }
     }
 }
