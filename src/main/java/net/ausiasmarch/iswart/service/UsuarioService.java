@@ -52,6 +52,10 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
 
     }
 
+    public UsuarioEntity getByEmail(String email) {
+        return oUsuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
+    }
+
     public Long count() {
         return oUsuarioRepository.count();
     }

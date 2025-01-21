@@ -41,6 +41,11 @@ public class Usuario {
         return new ResponseEntity<UsuarioEntity>(oUsuarioService.get(id), HttpStatus.OK);
     }
 
+    @GetMapping("/getbyemail/{email}")
+    public ResponseEntity<UsuarioEntity> getUsuarioByEmail(@PathVariable String email) {
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.getByEmail(email), HttpStatus.OK);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oUsuarioService.count(), HttpStatus.OK);
