@@ -78,6 +78,9 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
         if (oUsuarioEntity.getEmail() != null) {
             oUsuarioEntityFromDatabase.setEmail(oUsuarioEntity.getEmail());
         }
+        if (oUsuarioEntity.getPassword() != null) {
+            oUsuarioEntityFromDatabase.setPassword(oUsuarioEntity.getPassword());
+        }
         if (oUsuarioEntity.getTelefono() != null) {
             oUsuarioEntityFromDatabase.setTelefono(oUsuarioEntity.getTelefono());
         }
