@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
+import lombok.AllArgsConstructor;
 import net.ausiasmarch.iswart.entity.TipousuarioEntity;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
@@ -43,7 +44,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     }
 
     public UsuarioEntity get(Long id) {
-        // if(oAuthService.isContableWithItsOwnData(id) || oAuthService.isAdmin()) {
+        // if(oAuthService.isContableWithItsOwnData(id) || oAuthService.isAdmin()) || oAuthService.isAuditorWithItsOwnData(id)) {
         //     return oUsuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
         // }else{
         //     throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
@@ -53,7 +54,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     }
 
     public UsuarioEntity getByEmail(String email) {
-        return oUsuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
+        return oUsuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuario " + email + " no encontrado"));
     }
 
     public Long count() {
@@ -101,16 +102,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity>{
     public Long delete(Long id) {
         oUsuarioRepository.deleteById(id);
         return 1L;
-    }
-
-      public String RestrictedArea() {
-
-        if(oHttpServletRequest.getAttribute("email") == null) {
-            return "No tienes permiso para la zona restringida";
-        }else{
-            return "Bienvenido a zona restringida";
-        }
-
     }
 
 }

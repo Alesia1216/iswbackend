@@ -71,10 +71,4 @@ public class Usuario {
         return new ResponseEntity<Long>(oUsuarioService.deleteAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/restricted")
-    public ResponseEntity<String> restricted() {
-
-        return ResponseEntity.ok("\"" + oUsuarioService.RestrictedArea() + "\"");
-    }
-
 }
