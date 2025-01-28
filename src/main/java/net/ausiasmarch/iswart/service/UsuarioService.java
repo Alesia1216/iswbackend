@@ -31,20 +31,22 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     public Page<UsuarioEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
-        if (oAuthService.isAdmin()) {
-            return oUsuarioRepository.findAll(oPageable);
+        if (filter.isPresent()) {
+            if (oAuthService.isAdmin()) {
+                return oUsuarioRepository
+                        .findByNombreContainingOrApellido1ContainingOrApellido2ContainingOrEmailContainingOrDireccionContaining(
+                                filter.get(), filter.get(), filter.get(), filter.get(), filter.get(),
+                                oPageable);
+            } else {
+                throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            }
         } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            if (oAuthService.isAdmin()) {
+                return oUsuarioRepository.findAll(oPageable);
+            } else {
+                throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            }
         }
-
-        // if (filter.isPresent()) {
-        // return oUsuarioRepository
-        // .findByNombreContainingOrApellido1ContainingOrApellido2ContainingOrEmailContaining(
-        // filter.get(), filter.get(), filter.get(), filter.get(),
-        // oPageable);
-        // } else {
-        // return oUsuarioRepository.findAll(oPageable);
-        // }
 
     }
 
