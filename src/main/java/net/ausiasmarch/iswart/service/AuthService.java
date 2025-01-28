@@ -62,26 +62,26 @@ public class AuthService {
         return this.getUsuarioFromToken().getTipousuario().getId() == 1;
     }
 
-    public boolean isContable(){
+    public boolean isClient(){
         return this.getUsuarioFromToken().getTipousuario().getId() == 2;
     }
 
-    public boolean isAuditor(){
+    public boolean isModerator(){
         return this.getUsuarioFromToken().getTipousuario().getId() == 3;
     }
 
-    public boolean isAdminOrContable(){
-        return this.isAdmin() || this.isContable();
+    //public boolean isAdminOrClient(){
+        //return this.isAdmin() || this.isClient();
+    //}
+
+    public boolean isClientWithItsOwnData(Long id){
+        UsuarioEntity oUsuarioEntity = this.getUsuarioFromToken();
+        return this.isClient() && oUsuarioEntity.getId() == id;
     }
 
-    public boolean isContableWithItsOwnData(Long id){
+    public boolean isModeratorWithItsOwnData(Long id){
         UsuarioEntity oUsuarioEntity = this.getUsuarioFromToken();
-        return this.isContable() && oUsuarioEntity.getId() == id;
-    }
-
-    public boolean isAuditorWithItsOwnData(Long id){
-        UsuarioEntity oUsuarioEntity = this.getUsuarioFromToken();
-        return this.isAuditor() && oUsuarioEntity.getId() == id;
+        return this.isModerator() && oUsuarioEntity.getId() == id;
     }
 
 }

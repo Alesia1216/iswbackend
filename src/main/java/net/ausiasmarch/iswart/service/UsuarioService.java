@@ -6,11 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ValidationException;
-import lombok.AllArgsConstructor;
-import net.ausiasmarch.iswart.entity.TipousuarioEntity;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.UsuarioRepository;
@@ -24,7 +20,6 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     HttpServletRequest oHttpServletRequest;
 
     @Autowired
-
     AuthService oAuthService;
 
     TipousuarioService oTipousuarioService;
@@ -55,8 +50,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         UsuarioEntity usuario = oUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario " + id + " no encontrado"));
 
-        if (oAuthService.isContableWithItsOwnData(id) || oAuthService.isAdmin()
-                || oAuthService.isAuditorWithItsOwnData(id)) {
+        if (oAuthService.isClientWithItsOwnData(id) || oAuthService.isAdmin()
+                || oAuthService.isModeratorWithItsOwnData(id)) {
             return usuario;
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
@@ -68,8 +63,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         UsuarioEntity usuario = oUsuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario " + email + " no encontrado"));
 
-        if (oAuthService.isContableWithItsOwnData(usuario.getId()) || oAuthService.isAdmin()
-                || oAuthService.isAuditorWithItsOwnData(usuario.getId())) {
+        if (oAuthService.isClientWithItsOwnData(usuario.getId()) || oAuthService.isAdmin()
+                || oAuthService.isModeratorWithItsOwnData(usuario.getId())) {
             return usuario;
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
@@ -94,8 +89,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
 
-        if (oAuthService.isAdmin() || oAuthService.isContableWithItsOwnData(oUsuarioEntity.getId())
-                || oAuthService.isAuditorWithItsOwnData(oUsuarioEntity.getId())) {
+        if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oUsuarioEntity.getId())
+                || oAuthService.isModeratorWithItsOwnData(oUsuarioEntity.getId())) {
 
             UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
             if (oUsuarioEntity.getNombre() != null) {
