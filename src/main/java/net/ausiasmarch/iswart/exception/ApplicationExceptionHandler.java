@@ -62,9 +62,9 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(oErrorBean, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = ExistingUsersEmailException.class)
+    @ExceptionHandler(value = ExistingEntityException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorBean> ExistingUsersEmailException(ExistingUsersEmailException exception) {
+    public ResponseEntity<ErrorBean> ExistingEntityException(ExistingEntityException exception) {
         ErrorBean oErrorBean = new ErrorBean();
         oErrorBean.setMessage(exception.getMessage());
         oErrorBean.setStatus(HttpStatus.NOT_ACCEPTABLE.value());

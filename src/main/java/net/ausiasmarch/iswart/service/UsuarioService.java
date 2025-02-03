@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
-import net.ausiasmarch.iswart.exception.ExistingUsersEmailException;
+import net.ausiasmarch.iswart.exception.ExistingEntityException;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.UsuarioRepository;
 
@@ -34,13 +34,13 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
                                 filter.get(), filter.get(), filter.get(), filter.get(), filter.get(),
                                 oPageable);
             } else {
-                throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+                throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
             }
         } else {
             if (oAuthService.isAdmin()) {
                 return oUsuarioRepository.findAll(oPageable);
             } else {
-                throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+                throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
             }
         }
 
@@ -49,26 +49,26 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     public UsuarioEntity get(Long id) {
 
         UsuarioEntity usuario = oUsuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario " + id + " no encontrado"));
+                .orElseThrow(() -> new RuntimeException(" Disculpa, no hay ningun usuario con el id" + id));
 
         if (oAuthService.isClientWithItsOwnData(id) || oAuthService.isAdmin()
                 || oAuthService.isModeratorWithItsOwnData(id)) {
             return usuario;
         } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
 
     public UsuarioEntity getByEmail(String email) {
 
         UsuarioEntity usuario = oUsuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario " + email + " no encontrado"));
+                .orElseThrow(() -> new RuntimeException(" Disculpa, no hay ningun usuario con el email" + email));
 
         if (oAuthService.isClientWithItsOwnData(usuario.getId()) || oAuthService.isAdmin()
                 || oAuthService.isModeratorWithItsOwnData(usuario.getId())) {
             return usuario;
         } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
 
@@ -76,58 +76,61 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         if (oAuthService.isAdmin()) {
             return oUsuarioRepository.count();
         } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
 
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
-        if(oUsuarioRepository.findByEmail(oUsuarioEntity.getEmail()).isPresent()){
-            throw new ExistingUsersEmailException("Ya existe un usuario con el email " + oUsuarioEntity.getEmail());
-        } else{
+        if (oUsuarioRepository.findByEmail(oUsuarioEntity.getEmail()).isPresent()) {
+            throw new ExistingEntityException("Ya existe un usuario con el email " + oUsuarioEntity.getEmail());
+        } else {
             return oUsuarioRepository.save(oUsuarioEntity);
         }
-        //if (oAuthService.isAdmin()) {
-           
-        //} else {
-            //throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
-       // }
+        // if (oAuthService.isAdmin()) {
+
+        // } else {
+        // throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta
+        // zona");
+        // }
     }
 
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
 
         if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oUsuarioEntity.getId())
                 || oAuthService.isModeratorWithItsOwnData(oUsuarioEntity.getId())) {
-
-            UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
-            if (oUsuarioEntity.getNombre() != null) {
-                oUsuarioEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+            if (oUsuarioRepository.findByEmail(oUsuarioEntity.getEmail()).isPresent()) {
+                throw new ExistingEntityException("Ya existe un usuario con el email " + oUsuarioEntity.getEmail());
+            } else {
+                UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
+                if (oUsuarioEntity.getNombre() != null) {
+                    oUsuarioEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
+                }
+                if (oUsuarioEntity.getApellido1() != null) {
+                    oUsuarioEntityFromDatabase.setApellido1(oUsuarioEntity.getApellido1());
+                }
+                if (oUsuarioEntity.getApellido2() != null) {
+                    oUsuarioEntityFromDatabase.setApellido2(oUsuarioEntity.getApellido2());
+                }
+                if (oUsuarioEntity.getEmail() != null) {
+                    oUsuarioEntityFromDatabase.setEmail(oUsuarioEntity.getEmail());
+                }
+                if (oUsuarioEntity.getPassword() != null) {
+                    oUsuarioEntityFromDatabase.setPassword(oUsuarioEntity.getPassword());
+                }
+                if (oUsuarioEntity.getTelefono() != null) {
+                    oUsuarioEntityFromDatabase.setTelefono(oUsuarioEntity.getTelefono());
+                }
+                if (oUsuarioEntity.getDireccion() != null) {
+                    oUsuarioEntityFromDatabase.setDireccion(oUsuarioEntity.getDireccion());
+                }
+                if (oUsuarioEntity.getTipousuario() != null) {
+                    oUsuarioEntityFromDatabase.setTipousuario(oUsuarioEntity.getTipousuario());
+                }
+                return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
             }
-            if (oUsuarioEntity.getApellido1() != null) {
-                oUsuarioEntityFromDatabase.setApellido1(oUsuarioEntity.getApellido1());
-            }
-            if (oUsuarioEntity.getApellido2() != null) {
-                oUsuarioEntityFromDatabase.setApellido2(oUsuarioEntity.getApellido2());
-            }
-            if (oUsuarioEntity.getEmail() != null) {
-                oUsuarioEntityFromDatabase.setEmail(oUsuarioEntity.getEmail());
-            }
-            if (oUsuarioEntity.getPassword() != null) {
-                oUsuarioEntityFromDatabase.setPassword(oUsuarioEntity.getPassword());
-            }
-            if (oUsuarioEntity.getTelefono() != null) {
-                oUsuarioEntityFromDatabase.setTelefono(oUsuarioEntity.getTelefono());
-            }
-            if (oUsuarioEntity.getDireccion() != null) {
-                oUsuarioEntityFromDatabase.setDireccion(oUsuarioEntity.getDireccion());
-            }
-            if (oUsuarioEntity.getTipousuario() != null) {
-                oUsuarioEntityFromDatabase.setTipousuario(oUsuarioEntity.getTipousuario());
-            }
-            return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
-
         } else {
 
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
 
@@ -136,7 +139,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             oUsuarioRepository.deleteAll();
             return this.count();
         } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
 
@@ -145,7 +148,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             oUsuarioRepository.deleteById(id);
             return 1L;
         } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
 

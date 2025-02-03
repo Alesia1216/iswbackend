@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.ausiasmarch.iswart.entity.ProductoEntity;
+import net.ausiasmarch.iswart.exception.ExistingEntityException;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.ProductoRepository;
 
@@ -73,7 +74,11 @@ public class ProductoService implements ServiceInterface<ProductoEntity> {
 
     public ProductoEntity create(ProductoEntity oProductoEntity) {
         if (oAuthService.isAdmin()) {
-            return oProductoRepository.save(oProductoEntity);
+            if (oProductoRepository.findByDescripcion(oProductoEntity.getDescripcion()).isPresent()) {
+                throw new ExistingEntityException("Ya existe un producto nombrado " + oProductoEntity.getDescripcion());
+            } else {
+                return oProductoRepository.save(oProductoEntity);
+            }
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
         }
@@ -81,20 +86,25 @@ public class ProductoService implements ServiceInterface<ProductoEntity> {
 
     public ProductoEntity update(ProductoEntity oProductoEntity) {
         if (oAuthService.isAdmin()) {
-            ProductoEntity oProductoEntityFromDatabase = oProductoRepository.findById(oProductoEntity.getId()).get();
-            if (oProductoEntity.getDescripcion() != null) {
-                oProductoEntityFromDatabase.setDescripcion(oProductoEntity.getDescripcion());
+            if (oProductoRepository.findByDescripcion(oProductoEntity.getDescripcion()).isPresent()) {
+                throw new ExistingEntityException("Ya existe un producto nombrado " + oProductoEntity.getDescripcion());
+            } else {
+                ProductoEntity oProductoEntityFromDatabase = oProductoRepository.findById(oProductoEntity.getId())
+                        .get();
+                if (oProductoEntity.getDescripcion() != null) {
+                    oProductoEntityFromDatabase.setDescripcion(oProductoEntity.getDescripcion());
+                }
+                if (oProductoEntity.getEstilo() != null) {
+                    oProductoEntityFromDatabase.setEstilo(oProductoEntity.getEstilo());
+                }
+                if (oProductoEntity.getUnidades() != null) {
+                    oProductoEntityFromDatabase.setUnidades(oProductoEntity.getUnidades());
+                }
+                if (oProductoEntity.getPrecio() != null) {
+                    oProductoEntityFromDatabase.setPrecio(oProductoEntity.getPrecio());
+                }
+                return oProductoRepository.save(oProductoEntityFromDatabase);
             }
-            if (oProductoEntity.getEstilo() != null) {
-                oProductoEntityFromDatabase.setEstilo(oProductoEntity.getEstilo());
-            }
-            if (oProductoEntity.getUnidades() != null) {
-                oProductoEntityFromDatabase.setUnidades(oProductoEntity.getUnidades());
-            }
-            if (oProductoEntity.getPrecio() != null) {
-                oProductoEntityFromDatabase.setPrecio(oProductoEntity.getPrecio());
-            }
-            return oProductoRepository.save(oProductoEntityFromDatabase);
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
         }

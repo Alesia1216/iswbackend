@@ -1,10 +1,10 @@
 package net.ausiasmarch.iswart.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import net.ausiasmarch.iswart.entity.ProductoEntity;
 
 public interface ProductoRepository extends JpaRepository<ProductoEntity, Long>{
@@ -20,4 +20,6 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long>{
     Page<ProductoEntity> findByPrecio(
         Double filter3, Pageable pageable
     );
+
+    Optional<ProductoEntity> findByDescripcion(String descripcion);
 }
