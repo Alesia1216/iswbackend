@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
+import net.ausiasmarch.iswart.exception.ExistingUsersEmailException;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.UsuarioRepository;
 
@@ -80,8 +81,13 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     }
 
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
-        //if (oAuthService.isAdmin()) {
+        if(oUsuarioRepository.findByEmail(oUsuarioEntity.getEmail()).isPresent()){
+            throw new ExistingUsersEmailException("Ya existe un usuario con el email " + oUsuarioEntity.getEmail());
+        } else{
             return oUsuarioRepository.save(oUsuarioEntity);
+        }
+        //if (oAuthService.isAdmin()) {
+           
         //} else {
             //throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
        // }
