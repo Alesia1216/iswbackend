@@ -80,11 +80,11 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
     }
 
     public UsuarioEntity create(UsuarioEntity oUsuarioEntity) {
-        if (oAuthService.isAdmin()) {
+        //if (oAuthService.isAdmin()) {
             return oUsuarioRepository.save(oUsuarioEntity);
-        } else {
-            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
-        }
+        //} else {
+            //throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
+       // }
     }
 
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
