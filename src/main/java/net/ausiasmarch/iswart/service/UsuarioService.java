@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
 import net.ausiasmarch.iswart.exception.ExistingEntityException;
@@ -89,7 +91,8 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         // if (oAuthService.isAdmin()) {
 
         // } else {
-        // throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta
+        // throw new UnauthorizedAccessException("Disculpa, no tienes permisos para
+        // acceder a esta
         // zona");
         // }
     }
@@ -98,10 +101,15 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
         if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oUsuarioEntity.getId())
                 || oAuthService.isModeratorWithItsOwnData(oUsuarioEntity.getId())) {
-            if (oUsuarioRepository.findByEmail(oUsuarioEntity.getEmail()).isPresent()) {
+
+            UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).orElseThrow(
+                    () -> new EntityNotFoundException("Usuario no encontrado"));
+
+            // Verifica si el nuevo email ya existe y no es el mismo del usuario actual
+            if (!oUsuarioEntityFromDatabase.getEmail().equals(oUsuarioEntity.getEmail()) &&
+                    oUsuarioRepository.findByEmail(oUsuarioEntity.getEmail()).isPresent()) {
                 throw new ExistingEntityException("Ya existe un usuario con el email " + oUsuarioEntity.getEmail());
             } else {
-                UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).get();
                 if (oUsuarioEntity.getNombre() != null) {
                     oUsuarioEntityFromDatabase.setNombre(oUsuarioEntity.getNombre());
                 }

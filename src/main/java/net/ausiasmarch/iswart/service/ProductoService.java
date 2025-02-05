@@ -110,6 +110,15 @@ public class ProductoService implements ServiceInterface<ProductoEntity> {
         }
     }
 
+    public ProductoEntity updateStock(ProductoEntity oProductoEntity) {
+                ProductoEntity oProductoEntityFromDatabase = oProductoRepository.findById(oProductoEntity.getId())
+                        .get();
+                if (oProductoEntity.getUnidades() != null) {
+                    oProductoEntityFromDatabase.setUnidades(oProductoEntity.getUnidades());
+                }
+                return oProductoRepository.save(oProductoEntityFromDatabase);
+    }
+
     public Long deleteAll() {
         if (oAuthService.isAdmin()) {
             oProductoRepository.deleteAll();

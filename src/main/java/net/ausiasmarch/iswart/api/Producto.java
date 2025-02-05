@@ -60,6 +60,11 @@ public class Producto {
         return new ResponseEntity<ProductoEntity>(oProductoService.update(oProductoEntity), HttpStatus.OK);
     }
 
+    @PostMapping("/updatestock")
+    public ResponseEntity<ProductoEntity> updateStock(@RequestBody ProductoEntity oProductoEntity) {
+        return new ResponseEntity<ProductoEntity>(oProductoService.updateStock(oProductoEntity), HttpStatus.OK);
+    }
+
     @DeleteMapping("/deleteAll")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oProductoService.deleteAll(), HttpStatus.OK);
