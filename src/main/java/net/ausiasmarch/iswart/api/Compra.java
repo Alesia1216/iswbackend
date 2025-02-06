@@ -36,6 +36,13 @@ public class Compra {
         return new ResponseEntity<Page<CompraEntity>>(oCompraService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
+    @GetMapping("getHistorial/{id}")
+    public ResponseEntity<Page<CompraEntity>> getHistorial(
+            Pageable oPageable, @PathVariable Long id,
+            @RequestParam Optional<String> filter) {
+        return new ResponseEntity<>(oCompraService.getHistorial(oPageable, id, filter), HttpStatus.OK);
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<CompraEntity> getCompra(@PathVariable Long id) {
         return new ResponseEntity<CompraEntity>(oCompraService.get(id), HttpStatus.OK);

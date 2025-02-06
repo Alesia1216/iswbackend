@@ -13,4 +13,8 @@ public interface CompraRepository extends JpaRepository<CompraEntity, Long> {
     
     List<CompraEntity> findByUsuarioId(Long id_usuario);
 
+    @Query("SELECT c FROM CompraEntity c WHERE c.usuario.id = ?1")
+    Page<CompraEntity> findByUsuarioId(Long id_usuario, Pageable pageable);
+
+
 }

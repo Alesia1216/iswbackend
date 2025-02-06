@@ -1,5 +1,6 @@
 package net.ausiasmarch.iswart.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class CompraService implements ServiceInterface<CompraEntity>{
         // }
 
         return oCompraRepository.findAll(oPageable);
+    }
+
+    public Page<CompraEntity> getHistorial(Pageable oPageable, Long id_usuario, Optional<String> filter) {
+        return oCompraRepository.findByUsuarioId(id_usuario, oPageable);
     }
 
     public CompraEntity get(Long id) {
