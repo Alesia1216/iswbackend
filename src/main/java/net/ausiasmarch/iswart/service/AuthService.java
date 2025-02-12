@@ -66,22 +66,13 @@ public class AuthService {
         return this.getUsuarioFromToken().getTipousuario().getId() == 2;
     }
 
-    public boolean isModerator(){
-        return this.getUsuarioFromToken().getTipousuario().getId() == 3;
+    public boolean isAdminOrClient(){
+        return this.isAdmin() || this.isClient();
     }
-
-    //public boolean isAdminOrClient(){
-        //return this.isAdmin() || this.isClient();
-    //}
 
     public boolean isClientWithItsOwnData(Long id){
         UsuarioEntity oUsuarioEntity = this.getUsuarioFromToken();
         return this.isClient() && oUsuarioEntity.getId() == id;
-    }
-
-    public boolean isModeratorWithItsOwnData(Long id){
-        UsuarioEntity oUsuarioEntity = this.getUsuarioFromToken();
-        return this.isModerator() && oUsuarioEntity.getId() == id;
     }
 
 }

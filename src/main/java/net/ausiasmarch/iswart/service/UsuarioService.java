@@ -53,8 +53,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         UsuarioEntity usuario = oUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(" Disculpa, no hay ningun usuario con el id" + id));
 
-        if (oAuthService.isClientWithItsOwnData(id) || oAuthService.isAdmin()
-                || oAuthService.isModeratorWithItsOwnData(id)) {
+        if (oAuthService.isClientWithItsOwnData(id) || oAuthService.isAdmin()) {
             return usuario;
         } else {
             throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
@@ -66,8 +65,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
         UsuarioEntity usuario = oUsuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException(" Disculpa, no hay ningun usuario con el email" + email));
 
-        if (oAuthService.isClientWithItsOwnData(usuario.getId()) || oAuthService.isAdmin()
-                || oAuthService.isModeratorWithItsOwnData(usuario.getId())) {
+        if (oAuthService.isClientWithItsOwnData(usuario.getId()) || oAuthService.isAdmin()) {
             return usuario;
         } else {
             throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
@@ -99,8 +97,7 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
 
     public UsuarioEntity update(UsuarioEntity oUsuarioEntity) {
 
-        if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oUsuarioEntity.getId())
-                || oAuthService.isModeratorWithItsOwnData(oUsuarioEntity.getId())) {
+        if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oUsuarioEntity.getId())) {
 
             UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(oUsuarioEntity.getId()).orElseThrow(
                     () -> new EntityNotFoundException("Usuario no encontrado"));
