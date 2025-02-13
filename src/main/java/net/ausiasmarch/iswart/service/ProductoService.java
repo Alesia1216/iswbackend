@@ -86,11 +86,13 @@ public class ProductoService implements ServiceInterface<ProductoEntity> {
 
     public ProductoEntity update(ProductoEntity oProductoEntity) {
         if (oAuthService.isAdmin()) {
-            if (oProductoRepository.findByDescripcion(oProductoEntity.getDescripcion()).isPresent()) {
-                throw new ExistingEntityException("Ya existe un producto nombrado " + oProductoEntity.getDescripcion());
+            ProductoEntity oProductoEntityFromDatabase = oProductoRepository.findById(oProductoEntity.getId()).get();
+
+            if (!oProductoEntityFromDatabase.getDescripcion().equals(oProductoEntity.getDescripcion()) &&
+            oProductoRepository.findByDescripcion(oProductoEntity.getDescripcion()).isPresent()) {
+                throw new ExistingEntityException("Ya existe un usuario con el email " + oProductoEntity.getDescripcion());
             } else {
-                ProductoEntity oProductoEntityFromDatabase = oProductoRepository.findById(oProductoEntity.getId())
-                        .get();
+                
                 if (oProductoEntity.getDescripcion() != null) {
                     oProductoEntityFromDatabase.setDescripcion(oProductoEntity.getDescripcion());
                 }
