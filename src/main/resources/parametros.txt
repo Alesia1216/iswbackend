@@ -1,0 +1,33 @@
+Numero de perfiles:
+    2 -> Administrador, cliente
+
+Numero de tablas:
+    4 -> Compra, Producto, Usuario, Tipousuario
+
+Numero de relaciones:
+    3
+
+Numero de endpoints: 
+    1 en AuthController
+    8 en Compra
+    8 en Producto
+    8 en Usuario
+    7 en Tipousuario
+    -> 32 en total
+
+Numero de SQL:
+    1 -> Para el historial de compras de un Usuario
+
+Numero de rutas:
+    34
+
+Numero de componentes:
+    Compra: 3 admin, 5 client -> 8
+    Producto: 5 admin, 3 client -> 8
+    Shared: 6
+    Tipousuario: 5 admin
+    Usuario: 5 admin, 3 client -> 8
+    -> 35
+
+Numero de servicios:
+    8
