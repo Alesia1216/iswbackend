@@ -1,5 +1,6 @@
 package net.ausiasmarch.iswart.api;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import net.ausiasmarch.iswart.entity.ProductoEntity;
 import net.ausiasmarch.iswart.service.ProductoService;
@@ -45,15 +48,33 @@ public class Producto {
         return new ResponseEntity<Long>(oProductoService.count(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
-        return new ResponseEntity<Long>(oProductoService.delete(id), HttpStatus.OK);
-    }
+    //@PutMapping("/create")
+    //public ResponseEntity<ProductoEntity> create(@RequestBody ProductoEntity oProductoEntity) {
+        //return new ResponseEntity<ProductoEntity>(oProductoService.create(oProductoEntity), HttpStatus.OK);
+    //}
 
     @PutMapping("/create")
-    public ResponseEntity<ProductoEntity> create(@RequestBody ProductoEntity oProductoEntity) {
-        return new ResponseEntity<ProductoEntity>(oProductoService.create(oProductoEntity), HttpStatus.OK);
+    public ResponseEntity<ProductoEntity> create(
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("estilo") String estilo,
+            @RequestParam("unidades") Long unidades,
+            @RequestParam("precio") Double precio,
+            @RequestParam("habilitado") boolean habilitado,
+            @RequestParam("imagen") MultipartFile imagen) {
+        try {
+            ProductoEntity oProductoEntity = new ProductoEntity();
+            oProductoEntity.setDescripcion(descripcion);
+            oProductoEntity.setEstilo(estilo);
+            oProductoEntity.setUnidades(unidades);
+            oProductoEntity.setPrecio(precio);
+            oProductoEntity.setHabilitado(habilitado);
+            oProductoEntity.setImagen(imagen.getBytes());
+            return new ResponseEntity<ProductoEntity>(oProductoService.create(oProductoEntity), HttpStatus.OK);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 
     @PostMapping("/update")
     public ResponseEntity<ProductoEntity> update(@RequestBody ProductoEntity oProductoEntity) {
@@ -63,6 +84,12 @@ public class Producto {
     @PostMapping("/updatestock")
     public ResponseEntity<ProductoEntity> updateStock(@RequestBody ProductoEntity oProductoEntity) {
         return new ResponseEntity<ProductoEntity>(oProductoService.updateStock(oProductoEntity), HttpStatus.OK);
+    }
+
+    
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Long> delete(@PathVariable Long id) {
+        return new ResponseEntity<Long>(oProductoService.delete(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteAll")

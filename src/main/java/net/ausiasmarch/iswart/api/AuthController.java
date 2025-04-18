@@ -19,6 +19,8 @@ public class AuthController {
     @Autowired
     AuthService oAuthService;
     
+    //TODO metodo registrar
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LogindataBean oLogindataBean) {  
         if(oAuthService.checkLogin(oLogindataBean)) {

@@ -4,11 +4,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "producto")
 public class ProductoEntity {
     
@@ -30,67 +39,10 @@ public class ProductoEntity {
     @NotNull
     private Double precio;
 
-    public ProductoEntity() {
-    }
+    @Lob
+    private byte[] imagen;
 
-    public ProductoEntity(@NotNull @Size(min = 3, max = 255) String descripcion,
-            @NotNull @Size(min = 3, max = 255) String estilo, @NotNull @Size(min = 3, max = 255) Long unidades,
-            @NotNull @Size(min = 3, max = 255) Double precio) {
-        this.descripcion = descripcion;
-        this.estilo = estilo;
-        this.unidades = unidades;
-        this.precio = precio;
-    }
-
-    public ProductoEntity(Long id, @NotNull @Size(min = 3, max = 255) String descripcion,
-            @NotNull @Size(min = 3, max = 255) String estilo, @NotNull @Size(min = 3, max = 255) Long unidades,
-            @NotNull @Size(min = 3, max = 255) Double precio) {
-        this.id = id;
-        this.descripcion = descripcion;
-        this.estilo = estilo;
-        this.unidades = unidades;
-        this.precio = precio;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getEstilo() {
-        return estilo;
-    }
-
-    public void setEstilo(String estilo) {
-        this.estilo = estilo;
-    }
-
-    public Long getUnidades() {
-        return unidades;
-    }
-
-    public void setUnidades(Long unidades) {
-        this.unidades = unidades;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
+    private boolean habilitado;
  
     
 }

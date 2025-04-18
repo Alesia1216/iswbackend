@@ -22,4 +22,6 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long>{
     );
 
     Optional<ProductoEntity> findByDescripcion(String descripcion);
+
+    //TODO filtrar por estilo
 }
