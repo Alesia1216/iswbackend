@@ -35,13 +35,6 @@ public class LineaFactura {
         return new ResponseEntity<Page<LineafacturaEntity>>(oLineafacturaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
-    // @GetMapping("getHistorial/{id}")
-    // public ResponseEntity<Page<LineafacturaEntity>> getHistorial(
-    //         Pageable oPageable, @PathVariable Long id,
-    //         @RequestParam Optional<String> filter) {
-    //     return new ResponseEntity<>(oLineafacturaService.getHistorial(oPageable, id, filter), HttpStatus.OK);
-    // }
-
     @GetMapping("/get/{id}")
     public ResponseEntity<LineafacturaEntity> getCompra(@PathVariable Long id) {
         return new ResponseEntity<LineafacturaEntity>(oLineafacturaService.get(id), HttpStatus.OK);
@@ -52,11 +45,6 @@ public class LineaFactura {
         return new ResponseEntity<Long>(oLineafacturaService.count(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
-        return new ResponseEntity<Long>(oLineafacturaService.delete(id), HttpStatus.OK);
-    }
-
     @PutMapping("/create")
     public ResponseEntity<LineafacturaEntity> create(@RequestBody LineafacturaEntity oLineafacturaEntity) {
         return new ResponseEntity<LineafacturaEntity>(oLineafacturaService.create(oLineafacturaEntity), HttpStatus.OK);
@@ -65,6 +53,11 @@ public class LineaFactura {
     @PostMapping("/update")
     public ResponseEntity<LineafacturaEntity> update(@RequestBody LineafacturaEntity oLineafacturaEntity) {
         return new ResponseEntity<LineafacturaEntity>(oLineafacturaService.update(oLineafacturaEntity), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Long> delete(@PathVariable Long id) {
+        return new ResponseEntity<Long>(oLineafacturaService.delete(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteAll")

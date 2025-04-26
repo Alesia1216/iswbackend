@@ -35,13 +35,6 @@ public class Carrito {
         return new ResponseEntity<Page<CarritoEntity>>(oCarritoService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
-    // @GetMapping("getHistorial/{id}")
-    // public ResponseEntity<Page<CarritoEntity>> getHistorial(
-    //         Pageable oPageable, @PathVariable Long id,
-    //         @RequestParam Optional<String> filter) {
-    //     return new ResponseEntity<>(oCarritoService.getHistorial(oPageable, id, filter), HttpStatus.OK);
-    // }
-
     @GetMapping("/get/{id}")
     public ResponseEntity<CarritoEntity> getCompra(@PathVariable Long id) {
         return new ResponseEntity<CarritoEntity>(oCarritoService.get(id), HttpStatus.OK);
@@ -52,11 +45,6 @@ public class Carrito {
         return new ResponseEntity<Long>(oCarritoService.count(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
-        return new ResponseEntity<Long>(oCarritoService.delete(id), HttpStatus.OK);
-    }
-
     @PutMapping("/create")
     public ResponseEntity<CarritoEntity> create(@RequestBody CarritoEntity oCarritoEntity) {
         return new ResponseEntity<CarritoEntity>(oCarritoService.create(oCarritoEntity), HttpStatus.OK);
@@ -65,6 +53,11 @@ public class Carrito {
     @PostMapping("/update")
     public ResponseEntity<CarritoEntity> update(@RequestBody CarritoEntity oCarritoEntity) {
         return new ResponseEntity<CarritoEntity>(oCarritoService.update(oCarritoEntity), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Long> delete(@PathVariable Long id) {
+        return new ResponseEntity<Long>(oCarritoService.delete(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteAll")

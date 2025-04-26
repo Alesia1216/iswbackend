@@ -51,11 +51,6 @@ public class Factura {
         return new ResponseEntity<Long>(oFacturaService.count(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
-        return new ResponseEntity<Long>(oFacturaService.delete(id), HttpStatus.OK);
-    }
-
     @PutMapping("/create")
     public ResponseEntity<FacturaEntity> create(@RequestBody FacturaEntity oFacturaEntity) {
         return new ResponseEntity<FacturaEntity>(oFacturaService.create(oFacturaEntity), HttpStatus.OK);
@@ -64,6 +59,11 @@ public class Factura {
     @PostMapping("/update")
     public ResponseEntity<FacturaEntity> update(@RequestBody FacturaEntity oFacturaEntity) {
         return new ResponseEntity<FacturaEntity>(oFacturaService.update(oFacturaEntity), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Long> delete(@PathVariable Long id) {
+        return new ResponseEntity<Long>(oFacturaService.delete(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteAll")

@@ -9,6 +9,6 @@ import net.ausiasmarch.iswart.entity. LineafacturaEntity;
 public interface LineafacturaRepository extends JpaRepository<LineafacturaEntity, Long> {
     
         Page<LineafacturaEntity> findByPrecioContainingOrCantidadContaining(
-        String filter1, Pageable pageable
+        String filter1, String filter2, Pageable pageable
         );
 }

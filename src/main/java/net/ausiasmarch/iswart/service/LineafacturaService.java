@@ -28,7 +28,7 @@ public class LineafacturaService implements ServiceInterface<LineafacturaEntity>
             String filterValue = filter.get();
 
             return oLineafacturaRepository.findByPrecioContainingOrCantidadContaining(
-                        filterValue,oPageable);
+                        filterValue,filterValue,oPageable);
             
         } else {
             // Si no hay filtro, devolvemos todos los productos
