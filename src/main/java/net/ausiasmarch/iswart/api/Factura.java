@@ -34,12 +34,12 @@ public class Factura {
         return new ResponseEntity<Page<FacturaEntity>>(oFacturaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
-    // @GetMapping("getHistorial/{id}")
-    // public ResponseEntity<Page<FacturaEntity>> getHistorial(
-    //         Pageable oPageable, @PathVariable Long id,
-    //         @RequestParam Optional<String> filter) {
-    //     return new ResponseEntity<>(oFacturaService.getHistorial(oPageable, id, filter), HttpStatus.OK);
-    // }
+    @GetMapping("getHistorial/{id}")
+    public ResponseEntity<Page<FacturaEntity>> getHistorial(
+            Pageable oPageable, @PathVariable Long id,
+            @RequestParam Optional<String> filter) {
+        return new ResponseEntity<>(oFacturaService.getHistorial(oPageable, id, filter), HttpStatus.OK);
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<FacturaEntity> getCompra(@PathVariable Long id) {

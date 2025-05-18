@@ -39,6 +39,10 @@ public class FacturaService implements ServiceInterface<FacturaEntity> {
         }
     }
 
+     public Page<FacturaEntity> getHistorial(Pageable oPageable, Long id_usuario, Optional<String> filter) {
+         return oFacturaRepository.findByUsuarioId(id_usuario, oPageable);
+     }
+
     public FacturaEntity get(Long id) {
         return oFacturaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se ha encontrado el regitro en el carrito"));

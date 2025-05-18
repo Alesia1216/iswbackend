@@ -1,4 +1,5 @@
 package net.ausiasmarch.iswart.api;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,15 @@ public class LineaFactura {
             Pageable oPageable,
             @RequestParam  Optional<String> filter) {
         return new ResponseEntity<Page<LineafacturaEntity>>(oLineafacturaService.getPage(oPageable, filter), HttpStatus.OK);
+    }
+
+     @GetMapping("/factura/{id}")
+    public ResponseEntity<List<LineafacturaEntity>> getLineasByFacturaId(@PathVariable("id") Long facturaId) {
+        List<LineafacturaEntity> lineas = oLineafacturaService.getLineasByFacturaId(facturaId);
+        if (lineas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lineas);
     }
 
     @GetMapping("/get/{id}")

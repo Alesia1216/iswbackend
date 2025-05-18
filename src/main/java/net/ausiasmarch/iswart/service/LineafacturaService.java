@@ -1,5 +1,6 @@
 package net.ausiasmarch.iswart.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import net.ausiasmarch.iswart.api.LineaFactura;
 import net.ausiasmarch.iswart.entity.CarritoEntity;
 import net.ausiasmarch.iswart.entity.LineafacturaEntity;
 import net.ausiasmarch.iswart.entity.LineafacturaEntity;
@@ -34,6 +36,10 @@ public class LineafacturaService implements ServiceInterface<LineafacturaEntity>
             // Si no hay filtro, devolvemos todos los productos
             return oLineafacturaRepository.findAll(oPageable);
         }
+    }
+
+    public List<LineafacturaEntity> getLineasByFacturaId(Long facturaId) {
+        return oLineafacturaRepository.findByFacturaId(facturaId);
     }
 
     public LineafacturaEntity get(Long id) {

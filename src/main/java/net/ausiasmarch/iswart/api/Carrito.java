@@ -60,6 +60,11 @@ public class Carrito {
         return new ResponseEntity<Long>(oCarritoService.delete(id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteAllByUser/{id}")
+    public ResponseEntity<Long> deleteAllByUser(@PathVariable Long id) {
+        return new ResponseEntity<Long>(oCarritoService.deleteAllByUser(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/deleteAll")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oCarritoService.deleteAll(), HttpStatus.OK);

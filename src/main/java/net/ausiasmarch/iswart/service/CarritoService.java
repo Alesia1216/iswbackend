@@ -1,5 +1,6 @@
 package net.ausiasmarch.iswart.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import net.ausiasmarch.iswart.api.Carrito;
 import net.ausiasmarch.iswart.entity.CarritoEntity;
 import net.ausiasmarch.iswart.entity.CarritoEntity;
 import net.ausiasmarch.iswart.exception.ExistingEntityException;
@@ -64,19 +66,29 @@ public class CarritoService implements ServiceInterface<CarritoEntity> {
         }
     }
 
-    public Long deleteAll() {
+    public Long delete(Long id) {
         if (oAuthService.isAdmin()) {
-            oCarritoRepository.deleteAll();
-            return this.count();
+            oCarritoRepository.deleteById(id);
+            return 1L;
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
         }
     }
 
-    public Long delete(Long id) {
+    public Long deleteAllByUser(Long id) {
+        List<CarritoEntity> carritoUser = oCarritoRepository.findByUsuarioId(id);
+
+        if (carritoUser.isEmpty()) {
+            return 0L; // No había productos para eliminar
+        }
+        oCarritoRepository.deleteAll(carritoUser);
+        return (long) carritoUser.size(); // Devuelve cuántos elementos fueron eliminados
+    }
+
+    public Long deleteAll() {
         if (oAuthService.isAdmin()) {
-            oCarritoRepository.deleteById(id);
-            return 1L;
+            oCarritoRepository.deleteAll();
+            return this.count();
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
         }
