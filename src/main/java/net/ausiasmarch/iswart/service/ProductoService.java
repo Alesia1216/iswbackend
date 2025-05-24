@@ -64,6 +64,11 @@ public class ProductoService implements ServiceInterface<ProductoEntity> {
                 .orElseThrow(() -> new RuntimeException("No se ha encontrado el producto"));
     }
 
+    public byte[] getImagenById(Long id) {
+        ProductoEntity oProductoEntity = get(id);
+        return oProductoEntity.getImagen();
+    }
+
     public Long count() {
         if (oAuthService.isAdmin()) {
             return oProductoRepository.count();
@@ -105,12 +110,18 @@ public class ProductoService implements ServiceInterface<ProductoEntity> {
                 if (oProductoEntity.getPrecio() != null) {
                     oProductoEntityFromDatabase.setPrecio(oProductoEntity.getPrecio());
                 }
+                if (oProductoEntity.getImagen() != null) {
+                    oProductoEntityFromDatabase.setImagen(oProductoEntity.getImagen());
+                }
+                oProductoEntityFromDatabase.setHabilitado(oProductoEntity.isHabilitado());
+
                 return oProductoRepository.save(oProductoEntityFromDatabase);
             }
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
         }
     }
+
 
     public ProductoEntity updateStock(ProductoEntity oProductoEntity) {
                 ProductoEntity oProductoEntityFromDatabase = oProductoRepository.findById(oProductoEntity.getId())

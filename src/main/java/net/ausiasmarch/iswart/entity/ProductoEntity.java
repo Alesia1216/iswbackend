@@ -1,5 +1,6 @@
 package net.ausiasmarch.iswart.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,6 +41,7 @@ public class ProductoEntity {
     private Double precio;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] imagen;
 
     private boolean habilitado;
