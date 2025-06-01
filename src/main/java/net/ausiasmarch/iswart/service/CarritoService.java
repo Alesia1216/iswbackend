@@ -42,7 +42,7 @@ public class CarritoService implements ServiceInterface<CarritoEntity> {
      }
 
     public CarritoEntity create(CarritoEntity oCarritoEntity) {
-        if (oAuthService.isAdminOrClient()) {
+        if (oAuthService.isSessionActive()) {
                 return oCarritoRepository.save(oCarritoEntity);
         } else {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
@@ -67,7 +67,7 @@ public class CarritoService implements ServiceInterface<CarritoEntity> {
     }
 
     public Long delete(Long id) {
-        if (oAuthService.isAdmin()) {
+        if (oAuthService.isSessionActive()) {
             oCarritoRepository.deleteById(id);
             return 1L;
         } else {
@@ -76,13 +76,17 @@ public class CarritoService implements ServiceInterface<CarritoEntity> {
     }
 
     public Long deleteAllByUser(Long id) {
-        List<CarritoEntity> carritoUser = oCarritoRepository.findByUsuarioId(id);
+        if (oAuthService.isSessionActive()) {
+            List<CarritoEntity> carritoUser = oCarritoRepository.findByUsuarioId(id);
 
-        if (carritoUser.isEmpty()) {
-            return 0L; // No había productos para eliminar
+            if (carritoUser.isEmpty()) {
+                return 0L; // No había productos para eliminar
+            }
+            oCarritoRepository.deleteAll(carritoUser);
+            return (long) carritoUser.size(); // Devuelve cuántos elementos fueron eliminados
+        } else {
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta zona");
         }
-        oCarritoRepository.deleteAll(carritoUser);
-        return (long) carritoUser.size(); // Devuelve cuántos elementos fueron eliminados
     }
 
     public Long deleteAll() {
