@@ -53,6 +53,9 @@ public class CarritoService implements ServiceInterface<CarritoEntity> {
         if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oCarritoEntity.getUsuario().getId())) {
             CarritoEntity oCarritoEntityFromDatabase = oCarritoRepository.findById(oCarritoEntity.getId()).get();
 
+                if (oCarritoEntity.getCantidad() != null) {
+                    oCarritoEntityFromDatabase.setCantidad(oCarritoEntity.getCantidad());
+                }
                 if (oCarritoEntity.getUsuario() != null) {
                     oCarritoEntityFromDatabase.setUsuario(oCarritoEntity.getUsuario());
                 }
