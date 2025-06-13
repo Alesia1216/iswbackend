@@ -23,7 +23,7 @@ import net.ausiasmarch.iswart.service.CarritoService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/carrito")
+@RequestMapping("/initial/carrito")
 public class Carrito {
     @Autowired
     CarritoService oCarritoService;

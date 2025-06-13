@@ -23,7 +23,7 @@ import net.ausiasmarch.iswart.service.LineafacturaService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/lineafactura")
+@RequestMapping("/initial/lineafactura")
 public class LineaFactura {
     
     @Autowired

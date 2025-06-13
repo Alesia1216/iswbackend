@@ -27,7 +27,7 @@ import net.ausiasmarch.iswart.service.ProductoService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/producto")
+@RequestMapping("/initial/producto")
 public class Producto {
      @Autowired
     ProductoService oProductoService;

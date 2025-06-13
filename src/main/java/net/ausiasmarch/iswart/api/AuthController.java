@@ -13,7 +13,7 @@ import net.ausiasmarch.iswart.service.AuthService;
 
 @CrossOrigin (origins = "*", allowedHeaders = "*", maxAge = 3600) 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/initial/auth")
 public class AuthController {
 
     @Autowired

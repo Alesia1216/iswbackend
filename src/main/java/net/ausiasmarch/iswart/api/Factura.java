@@ -22,7 +22,7 @@ import net.ausiasmarch.iswart.service.FacturaService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/factura")
+@RequestMapping("/initial/factura")
 public class Factura {
     @Autowired
     FacturaService oFacturaService;

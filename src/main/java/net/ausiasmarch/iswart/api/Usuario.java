@@ -23,7 +23,7 @@ import net.ausiasmarch.iswart.service.UsuarioService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/initial/usuario")
 public class Usuario {
 
     @Autowired
