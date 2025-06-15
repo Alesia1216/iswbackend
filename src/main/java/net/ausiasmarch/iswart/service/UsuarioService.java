@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.iswart.entity.UsuarioEntity;
 import net.ausiasmarch.iswart.exception.ExistingEntityException;
+import net.ausiasmarch.iswart.exception.NotAcceptableException;
 import net.ausiasmarch.iswart.exception.UnauthorizedAccessException;
 import net.ausiasmarch.iswart.repository.UsuarioRepository;
 
@@ -135,6 +136,24 @@ public class UsuarioService implements ServiceInterface<UsuarioEntity> {
             }
         } else {
 
+            throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
+        }
+    }
+
+    public UsuarioEntity changePassword(long userId, String oldPassword, String newPassword) {
+        UsuarioEntity oUsuarioEntityFromDatabase = oUsuarioRepository.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException("Usuario no encontrado"));
+
+        if (oAuthService.isAdmin() || oAuthService.isClientWithItsOwnData(oUsuarioEntityFromDatabase.getId())) {
+
+            // Compara hash con hash
+            if (!oUsuarioEntityFromDatabase.getPassword().equals(oldPassword)) {
+                throw new NotAcceptableException("La contraseña actual no es correcta");
+            }
+
+            oUsuarioEntityFromDatabase.setPassword(newPassword); // Ya viene con hash desde el frontend
+            return oUsuarioRepository.save(oUsuarioEntityFromDatabase);
+        } else {
             throw new UnauthorizedAccessException("Disculpa, no tienes permisos para acceder a esta zona");
         }
     }
